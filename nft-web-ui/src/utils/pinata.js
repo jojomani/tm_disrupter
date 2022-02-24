@@ -28,3 +28,29 @@ export const pinJSONToIPFS = async(JSONBody) => {
             }
     });
 };
+
+// const axios = require('axios');
+
+// export const testAuthentication = () => {
+//     const url = `https://api.pinata.cloud/data/testAuthentication`;
+//     return axios
+//         .get(url, {
+//             headers: {
+//                 pinata_api_key: key,
+//                 pinata_secret_api_key: secret,
+//             }
+//         })
+//         .then(function (response) {
+//             return {
+//                 success: true,
+//                 pinataUrl: "https://gateway.pinata.cloud/ipfs/" + response.data.IpfsHash
+//             };
+//         })
+//         .catch(function (error) {
+//             console.log(error)
+//             return {
+//                 success: false,
+//                 message: error.message,
+//             }
+//         });
+// };

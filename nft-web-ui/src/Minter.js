@@ -10,13 +10,34 @@ const Minter = (props) => {
   const [description, setDescription] = useState("");
   const [url, setURL] = useState("");
 
-useEffect(async () => {
-    const {address, status} = await getCurrentWalletConnected();
+  useEffect(async () => {
+    const { address, status } = await getCurrentWalletConnected();
     setWallet(address)
     setStatus(status);
 
-    addWalletListener(); 
-}, []);
+    addWalletListener();
+  }, []);
+  
+  
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const { address, status } = await getCurrentWalletConnected();
+  //     setWallet(address)
+  //     setStatus(status);
+  //   }
+  //   addWalletListener();
+  // }, []);
+  
+//   useEffect(() => {
+//     async function fetchData() {
+//       // You can await here
+//       const { address, status } = await getCurrentWalletConnected();
+//       setWallet(address)
+//       setStatus(status);
+//     }
+//     fetchData();
+// addWalletListener();
+// }, []);
 
   const connectWalletPressed = async () => {
     const walletResponse = await connectWallet();
@@ -26,6 +47,7 @@ useEffect(async () => {
 
   const onMintPressed = async () => {
     const { status } = await mintNFT(url, name, description);
+    // console.log(status)
     setStatus(status);
 };
 
