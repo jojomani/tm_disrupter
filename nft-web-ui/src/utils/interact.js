@@ -1,11 +1,13 @@
-import {pinJSONToIPFS} from './pinata.js'
+// import { load } from 'dotenv';
+import { pinJSONToIPFS } from './pinata.js'
 require('dotenv').config();
 const alchemyKey = process.env.REACT_APP_ALCHEMY_KEY;
 const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
-const web3 = createAlchemyWeb3("https://eth-rinkeby.alchemyapi.io/v2/"+alchemyKey);
+const web3 = createAlchemyWeb3("https://eth-rinkeby.alchemyapi.io/v2/" + alchemyKey);
+// const web3 = createAlchemyWeb3(alchemyKey);
 
-const contractABI = require('../contract-abi.json')
-// const contractAddress = "0x425eeE2Cc72048cD559002B7BB2Bb929C32FBD5e";
+const contractABI = require('../contract-abi2.json')
+// const contractAddress = "0xea4f13Fa526dB7113b3D3E7d053333FC78D73D2D";
 const contractAddress = "0x4C4a07F737Bf57F6632B6CAB089B78f62385aCaE";
 
 
@@ -87,19 +89,18 @@ export const connectWallet = async () => {
     }
   };
 
-// export const mintNFT = () => {
-//   return 5
-// }
+  async function loadContract() {
+    return new web3.eth.Contract(contractABI, contractAddress);
+  }
 
-  export const mintNFT = async(url, name, description) => {
-    //error handling
-    // if (url.trim() == "" || (name.trim() == "" || description.trim() == "")) { 
-    //   return {
-    //    success: false,
-    //    status: "❗Please make sure all fields are completed before minting.",
-    //   }
-    // }
-        //make metadata
+export const mintNFT = async (url, name, description) => {
+  if (url.trim() == "" || (name.trim() == "" || description.trim() == "")) {
+    return {
+      success: false,
+      status: "❗Please make sure all fields are completed before minting.",
+    }
+  }
+  //make metadata
   const metadata = new Object();
   metadata.name = name;
   metadata.image = url;
@@ -108,39 +109,66 @@ export const connectWallet = async () => {
   //make pinata call
   const pinataResponse = await pinJSONToIPFS(metadata);
   if (!pinataResponse.success) {
-      return {
-          success: false,
-          status: "😢 Something went wrong while uploading your tokenURI.",
-      }
-  } 
-    const tokenURI = pinataResponse.pinataUrl;
+    return {
+      success: false,
+      status: "😢 Something went wrong while uploading your tokenURI.",
+    };
+  }
+  const tokenURI = pinataResponse.pinataUrl;
     
-    //load smart contract
-    window.contract = await new web3.eth.Contract(contractABI, contractAddress);
-    console.log(window.contract)
+  //load smart contract
+window.contract = new web3.eth.Contract(contractABI, contractAddress);
+  console.log(window.contract)
 
-      //set up your Ethereum transaction
- const transactionParameters = {
+  //set up your Ethereum transaction
+  const transactionParameters = {
     to: contractAddress, // Required except during contract publications.
     from: window.ethereum.selectedAddress, // must match user's active address.
-    'data': window.contract.methods.mintNFT(window.ethereum.selectedAddress, tokenURI).encodeABI()//make call to NFT smart contract 
-};
-console.log(transactionParameters)
-//sign the transaction via Metamask
-try {
-const txHash = await window.ethereum.request({
+    data: window.contract.methods
+      .mintNFT(window.ethereum.selectedAddress, tokenURI)
+      .encodeABI()//make call to NFT smart contract 
+  };
+
+  // const signedTx = await web3.eth.accounts.signTransaction(transactionParameters, alchemyKey);
+  // const transactionReceipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+  // console.log(`Transaction receipt: ${JSON.stringify(transactionReceipt)}`);
+
+
+  console.log(transactionParameters)
+  //sign the transaction via Metamask
+  if (window.ethereum) {
+    try {
+      const txHash = await window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [transactionParameters],
-    });
-  // console.log("made it")
-return {
-    success: true,
-    status: "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" + txHash
-}
-} catch (error) {
-return {
-    success: false,
-    status: "😥 Something went wrong: " + error.message
-}
-      }
+      });
+      console.log("made it")
+      return {
+        success: true,
+        status: "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" + txHash
+      };
+    } catch (error) {
+      return {
+        success: false,
+        status: "😥 Something went wrong: " + error.message
+      };
+    }
   }
+};
+
+// try {
+//   const txHash =  window.ethereum.request({
+//     method: 'eth_sendTransaction',
+//     params: [transactionParameters],
+//   });
+//   console.log("made it")
+//   return {
+//     success: true,
+//     status: "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" + txHash
+//   };
+// } catch (error) {
+//   return {
+//     success: false,
+//     status: "😥 Something went wrong: " + error.message
+//   };
+// }

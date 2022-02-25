@@ -12,12 +12,37 @@ const Minter = (props) => {
 
   useEffect(async () => {
     const { address, status } = await getCurrentWalletConnected();
+
     setWallet(address)
     setStatus(status);
 
     addWalletListener();
   }, []);
   
+  function addWalletListener() {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", (accounts) => {
+        if (accounts.length > 0) {
+          setWallet(accounts[0]);
+          setStatus("👆🏽 Write a message in the text-field above.");
+        } else {
+          setWallet("");
+          setStatus("🦊 Connect to Metamask using the top right button.");
+        }
+      });
+    } else {
+      setStatus(
+        <p>
+          {" "}
+          🦊{" "}
+          <a target="_blank" href={`https://metamask.io/download.html`}>
+            You must install Metamask, a virtual Ethereum wallet, in your
+            browser.
+          </a>
+        </p>
+      );
+    }
+  }
   
   // useEffect(() => {
   //   async function fetchData() {
@@ -45,36 +70,20 @@ const Minter = (props) => {
     setWallet(walletResponse.address);
   };
 
-  const onMintPressed = async () => {
-    const { status } = await mintNFT(url, name, description);
-    // console.log(status)
-    setStatus(status);
-};
+//   const onMintPressed = async () => {
+//     const { status } = await mintNFT(url, name, description);
+//     setStatus(status);
+// };
 
-  function addWalletListener() {
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", (accounts) => {
-        if (accounts.length > 0) {
-          setWallet(accounts[0]);
-          setStatus("👆🏽 Write a message in the text-field above.");
-        } else {
-          setWallet("");
-          setStatus("🦊 Connect to Metamask using the top right button.");
-        }
-      });
-    } else {
-      setStatus(
-        <p>
-          {" "}
-          🦊{" "}
-          <a target="_blank" href={`https://metamask.io/download.html`}>
-            You must install Metamask, a virtual Ethereum wallet, in your
-            browser.
-          </a>
-        </p>
-      );
-    }
+const onMintPressed = async () => {
+  const { success, status } = await mintNFT(url, name, description);
+  setStatus(status);
+  if (success) {
+    setName("");
+    setDescription("");
+    setURL("");
   }
+};
 
   return (
     <div className="Minter">
@@ -114,7 +123,7 @@ const Minter = (props) => {
           onChange={(event) => setDescription(event.target.value)}
         />
       </form>
-      <button id="mintButton" onClick={onMintPressed}>
+      <button id="mintButton" onClick={onMintPressed}> 
         Mint NFT
       </button>
       <p id="status">
