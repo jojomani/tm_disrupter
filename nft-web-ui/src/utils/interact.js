@@ -117,14 +117,18 @@ export const mintNFT = async (url, name, description) => {
   const tokenURI = pinataResponse.pinataUrl;
     
   //load smart contract
-window.contract = new web3.eth.Contract(contractABI, contractAddress);
+window.contract = await new web3.eth.Contract(contractABI, contractAddress);
   console.log(window.contract)
 
   //set up your Ethereum transaction
   const transactionParameters = {
     to: contractAddress, // Required except during contract publications.
-    from: window.ethereum.selectedAddress, // must match user's active address.
-    data: window.contract.methods
+    from: window.ethereum.selectedAddress,
+    // 'nonce': web3.eth.Contract.getTransactionCount('latest'),
+    'gas': "22000",
+    // 'maxFeePerGas': max,
+    'maxPriorityFeePerGas': "2999999987", // must match user's active address.
+    'data': window.contract.methods
       .mintNFT(window.ethereum.selectedAddress, tokenURI)
       .encodeABI()//make call to NFT smart contract 
   };
