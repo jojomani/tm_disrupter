@@ -25,6 +25,4 @@ contract Disrupter is ERC721Full {
 
         return DisrupterId;
     }
-
-
 }

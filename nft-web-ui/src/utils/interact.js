@@ -6,9 +6,9 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3("https://eth-rinkeby.alchemyapi.io/v2/" + alchemyKey);
 // const web3 = createAlchemyWeb3(alchemyKey);
 
-const contractABI = require('../contract-abi.json')
-const contractAddress = "0xea4f13Fa526dB7113b3D3E7d053333FC78D73D2D";
-// const contractAddress = "0x4C4a07F737Bf57F6632B6CAB089B78f62385aCaE";
+const contractABI = require('../contract-abi2.json')
+// const contractAddress = "0xea4f13Fa526dB7113b3D3E7d053333FC78D73D2D";
+const contractAddress = "0x4C4a07F737Bf57F6632B6CAB089B78f62385aCaE";
 
 
 export const connectWallet = async () => {
