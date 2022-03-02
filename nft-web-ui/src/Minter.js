@@ -124,7 +124,7 @@ const onMintPressed = async () => {
         />
       </form>
       <button id="mintButton" onClick={onMintPressed}> 
-        Mint NFT
+        Mint Your NFT
       </button>
       <p id="status">
         {status}

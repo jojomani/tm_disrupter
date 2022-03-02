@@ -6,8 +6,13 @@ const { createAlchemyWeb3 } = require("@alch/alchemy-web3");
 const web3 = createAlchemyWeb3("https://eth-rinkeby.alchemyapi.io/v2/" + alchemyKey);
 // const web3 = createAlchemyWeb3(alchemyKey);
 
-const contractABI = require('../contract-abi.json')
-const contractAddress = "0xdE4F610bDFBd0075c2A4871f56E3421A999aBB01";
+const contractABI = require('../contract-abi2.json')
+
+// 1st Contract 
+// const contractAddress = "0xdE4F610bDFBd0075c2A4871f56E3421A999aBB01";
+
+// 2nd Contract - Updated new version
+const contractAddress = "0xF34125cA072942d30A633f83aF56f935109696b7";
 
 
 export const connectWallet = async () => {
@@ -124,9 +129,9 @@ window.contract = await new web3.eth.Contract(contractABI, contractAddress);
     to: contractAddress, // Required except during contract publications.
     from: window.ethereum.selectedAddress,
     // 'nonce': web3.eth.Contract.getTransactionCount('latest'),
-    'gas': "50000",
-    'maxFeePerGas': "5249999" ,
-    'maxPriorityFeePerGas': "5199999", // must match user's active address.
+    'gas': "80000",
+    'maxFeePerGas': "52079999" ,
+    'maxPriorityFeePerGas': "51999999", // must match user's active address.
     'data': window.contract.methods
       .mintNFT(window.ethereum.selectedAddress, tokenURI)
       .encodeABI()//make call to NFT smart contract 
