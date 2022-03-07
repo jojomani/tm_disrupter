@@ -163,20 +163,3 @@ window.contract = await new web3.eth.Contract(contractABI, contractAddress);
     }
   }
 };
-
-// try {
-//   const txHash =  window.ethereum.request({
-//     method: 'eth_sendTransaction',
-//     params: [transactionParameters],
-//   });
-//   console.log("made it")
-//   return {
-//     success: true,
-//     status: "✅ Check out your transaction on Etherscan: https://rinkeby.etherscan.io/tx/" + txHash
-//   };
-// } catch (error) {
-//   return {
-//     success: false,
-//     status: "😥 Something went wrong: " + error.message
-//   };
-// }

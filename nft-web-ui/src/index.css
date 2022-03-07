@@ -78,6 +78,9 @@ button {
   margin-bottom: 50px;
   line-height: 16px;
   border-radius: 30px;
+  background-color: #1e42c7;
+  color: white;
+
 }
 
 #mintButton {

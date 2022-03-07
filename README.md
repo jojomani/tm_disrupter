@@ -146,7 +146,7 @@ abstract contract Ownable is Context {
 2. Click on the green "code" button which will allow you to clone. ![Code button in Github](images/code.png)
 3. Then click on SSH or HTTPS as a clone method depending on if you have the SSH key setup. You will copy the link. You will then type "git clone" in Gitback or Terminal. Then paste the ssh or https information and press enter. ![Clone in Github](images/clone.png)
 4. Next type "git pull" command in Terminal or GitBash to pull the repository from the remote Github repository to a local directory on your computer. ![Git pull in Github](images/git_pull.png)
-5. You have access to the project. Also there will be all the files that the application is depended on. 
+5. You have access to the project. Also there will be all the files that the application is depended on.  
 
 ---
 
