@@ -166,7 +166,7 @@ If you want to run it locally, please follow the next steps:
 
 You should see a tab open on your browser, running on *http://localhost:3000/* : 
 
-![Local WebApp](readme_files/local_webapp.png)
+![Local WebApp](nft-web-ui/readme_files/local_webapp.png)
 
 
 ## Contributors
